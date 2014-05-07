@@ -112,6 +112,14 @@ describe('lib', function () {
             phoneformat("", "");
         });
 
+        it('should accept correctly-written full numbers as is', function () {
+            phoneformat('8 (495) 333-45-23', '8 (495) 333-45-23');
+            phoneformat('8 (8555) 33-45-23', '8 (8555) 33-45-23');
+            phoneformat('+7 (950) 333-45-23', '+7 (950) 333-45-23');
+            phoneformat('333-45-23', '333-45-23');
+            phoneformat('33-45-23', '33-45-23');
+        });
+
         it('should put missing 8 before the number', function () {
             phoneformat('(495) 967-968-9', '8 (495) 967-968-9');
             phoneformat('(4812) - 350-973', '8 (4812) 350-973');
@@ -126,6 +134,7 @@ describe('lib', function () {
 
         it('should replace 8 with +7 in mobile numbers', function () {
             phoneformat('8(981)440-32-01', '+7 (981) 440-32-01');
+            phoneformat('8 (909)662-43-68', '+7 (909) 662-43-68');
         });
 
         it('should correct improper spaces placement around the zone code and clean up unnecessary symbols', function () {
@@ -133,6 +142,7 @@ describe('lib', function () {
             phoneformat('+7(916) 885-11-58', '+7 (916) 885-11-58');
             phoneformat('+7(953) 60-39-094', '+7 (953) 60-39-094');
             phoneformat('8 (4812) - 350-973', '8 (4812) 350-973');
+            phoneformat('8(4742)22-61-15', '8 (4742) 22-61-15');
         });
 
         it('should leave numbers with less than 10 symbols in them as is', function () {
@@ -142,16 +152,29 @@ describe('lib', function () {
         });
 
         it('should correct most usual mistakes in writing numbers', function () {
-            phoneformat('79160070695', '+7 (916) 007-06-95');
             phoneformat('8-905-696-55-91', '+7 (905) 696-55-91');
-//            phoneformat('8 495 941 93 20', '8 (495) 941-93-20');
-            phoneformat('', '');
-            phoneformat('', '');
-            phoneformat('', '');
-            phoneformat('', '');
-            phoneformat('', '');
+            phoneformat('8-8552-96-55-91', '8 (8552) 96-55-91');
+            phoneformat('8 495 941 93 20', '8 (495) 941-93-20');
+            phoneformat('8-910-866-0002', '+7 (910) 866-0002');
+            phoneformat('+7(904)-955-17-17', '+7 (904) 955-17-17');
+            phoneformat('8-916-007-07-40', '+7 (916) 007-07-40');
         });
 
+        it('should format digit-only numbers as nice as it can', function () {
+            phoneformat('89042351638', '+7 (904) 235-16-38');
+            phoneformat('88552346588', '8 (855) 234-65-88');
+        });
+
+        it('should be able to correct missing + in the international mobile number for Russia.', function () {
+            phoneformat('79160070695', '+7 (916) 007-06-95');
+        });
+
+        it('should return anything which has symbols other than digits, dashes, closed parentheses and spaces unmodified', function () {
+            phoneformat('1343-34234-40abdcd', '1343-34234-40abdcd');
+            phoneformat('8-91adafsd6-0\n07-07-40', '8-91adafsd6-0\n07-07-40');
+            phoneformat('891343-34234-40abdcd', '891343-34234-40abdcd');
+            phoneformat('89.13.43-34.23', '89.13.43-34.23');
+        });
         
     });
 });

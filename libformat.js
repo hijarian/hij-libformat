@@ -66,25 +66,33 @@ function phoneformat(raw) {
     if (raw.length < 10)
         return raw;
 
+    if (raw.match(/[^0-9-+)( ]/))
+        return raw;
+
     // Basic cleanup of the long number
     var base = raw
         .collapseSpaces()
         .correctSpacesAroundParentheses()
         .trim();
 
+    // Trim prefix to go international 
+    if (base.charAt(0) == '8' || base.substring(0, 2) == '79')
+        base = base.substring(1);
+    else if (base.substring(0, 2) == '+7')
+        base = base.substring(2);
+
+    // If only numbers then format it as nice as you can.
+    if (base.match(/\d+/))
+        base = base.replace(/(\d\d\d)(\d\d\d)(\d\d)(\d+)$/, '($1) $2-$3-$4');
+
+    // Replace spaces with dashes
+    base = base.replace(/ +/g, '-');
+
+    // Replace zone code inside dashes or spaces with zone code in parentheses
+    base = base.replace(/^[- ]*(\d+)[- ]+/, '($1) ');
+
     // If we have parentheses, GREAT! Remove everything around them and put 8 at start.
     base = base.replace(/.*\((.*)\)[^0-9]+/, '8 ($1) ');
-    
-    // mobile phone without 8
-    if (base.charAt(0) == '9' || base.substring(0, 2) == '(9') 
-        return base.replace(/[^0-9]/g, '').replace(/(\d\d\d)(\d\d\d)(\d\d)(\d\d)$/, '+7 ($1) $2-$3-$4');
-
-    // mobile number without '+' and punctuation
-    if (base.substring(0,2) == '79')
-        return base.substring(1).replace(/[^0-9]/g, '').replace(/(\d\d\d)(\d\d\d)(\d\d)(\d\d)$/, '8 ($1) $2-$3-$4').replace(/^8 \(9/, '+7 (9');
-
-    // Replace zone code in dashes with zone code in parentheses
-    base = base.replace(/^8-(\d+)-/, '8 ($1) ');
 
     // If zone code starts with 9, it's mobile number. Start it with international +7 
     // instead of Russia-specific 8

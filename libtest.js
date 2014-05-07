@@ -27,6 +27,29 @@ describe('lib', function () {
         });
     });
 
+    describe('oneline()', function () {
+        var oneline = function (input, expected) {
+            lib.oneline(input).should.equal(expected);
+        };
+
+        it('should handle trivial case', function () {
+            oneline("", "");
+        });
+
+        it('should remove newlines from inside the line and replace it with spaces', function () {
+            oneline("abc\r\ndef", "abc def");
+            oneline("abc\ndef", "abc def");
+            oneline("abc\rdef", "abc def");
+            oneline("abc\r\n\r\r\r\ndef", "abc    def");
+            oneline("ABC\r\nDEF\r\GHI", "ABC DEF GHI");
+        });
+        
+        it('should leave lines without line breaks as is', function () {
+            oneline("abc def", "abc def");
+            oneline("abcdef", "abcdef");
+        });
+    });
+
     describe('clean()', function () {
         var clean = function (input, expected) {
             lib.clean(input).should.equal(expected);

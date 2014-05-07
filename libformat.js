@@ -101,6 +101,13 @@ function phoneformat(raw) {
     return base;
 }
 
+function oneline(raw) {
+    return raw
+	.replace(/\r?\n|\r/g, ' '); 
+}
+
+
+
 
 //------------------------------------------------------------------------
 module.exports = {
@@ -108,5 +115,6 @@ module.exports = {
     clean: clean,
     titlecase: titlecase,
     punctuate: punctuate,
-    phoneformat: phoneformat
+    phoneformat: phoneformat,
+    oneline: oneline
 }

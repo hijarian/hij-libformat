@@ -3,7 +3,7 @@
 v1.0, {docdatetime}
 :toc:
 
-Здесь несколько методов для работы со строками в Javascript, написанные ради другого проекта, [скрипта автоматизации создания визиток в Adobe Illustrator](https://github.com/hijarian/business-cards-datamerge).
+Здесь несколько методов для работы со строками в Javascript, написанные ради другого проекта, https://github.com/hijarian/business-cards-datamerge[скрипта автоматизации создания визиток в Adobe Illustrator].
 
 Библиотека написана с расчётом на модульную систему node.js. Тесты написаны на Mocha.
 
@@ -14,7 +14,7 @@ v1.0, {docdatetime}
 Вообще, смотрите юнит-тесты, они лучшая документация.
 
 [source,javascript]
--------
+----
 var lib = require('./libformat.js');
 
 // Форматирует неправильно написанный номер телефона
@@ -35,4 +35,4 @@ lib.clean("Иванов   Иван     Иванович");
 // Переводит в верхний регистр первые буквы каждого слова
 lib.titlecase("surname name family-name");
 
---------
+----
